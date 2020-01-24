@@ -1,14 +1,51 @@
+<!-- HEADER -->
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>
-      Ionic Blank
+      Google Maps API
     </ion-title>
   </ion-toolbar>
 </ion-header>
-
+<!-- CONTENIDO DE LA APP -->
 <ion-content>
-  <div class="ion-padding">
-    The world is your oyster.
-    <p>If you get lost, the <a target="_blank" rel="noopener" href="https://ionicframework.com/docs/">docs</a> will be your guide.</p>
-  </div>
+  <ion-card style="height: 95%;overflow: auto;">
+    <br>
+      <form>
+        <ion-item>
+          <ion-label>Ruta</ion-label>
+          <input id="idOrigen" style="border: none;">
+        </ion-item>
+        <ion-item>
+          <ion-label>Ruta</ion-label>
+          <input id="idDestino" style="border: none;">
+        </ion-item>
+        <ion-item>
+          <ion-label>Medio de transporte</ion-label>
+          <ion-select id="mode" okText="Okay" cancelText="Dismiss">
+            <ion-select-option value="DRIVING" selected >Auto</ion-select-option>
+            <ion-select-option value="WALKING">Caminando</ion-select-option>
+            <ion-select-option value="BICYCLING">Bicicleta</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </form>
+      <ion-item>
+        <ion-button onclick="removerUltimoMarker()">
+          Eliminar ultimo marker
+        </ion-button>
+        <ion-button onclick="seleccionarUbicacion()">
+          Seleccionar área
+        </ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-button onclick="activarGeolocalizacion()">
+          Mi ubicación
+        </ion-button>
+      </ion-item>
+      <div id="map" style="padding: 143px; border-radius: 6px;margin: 20px;"></div>
+  </ion-card>
 </ion-content>
+<!-- FOOTER  -->
+<ion-footer>
+  <ion-toolbar color="primary">
+  </ion-toolbar>
+</ion-footer>
