@@ -4,6 +4,7 @@ var arregloMarkers = []; //almacena los markers de esta practica
 var marker;
 var id = 0; //representa un id autoincrementable para cada marker
 var pos;//representa la posición actual
+var arregloPuntos = [];
 
 //INICIO - FUNCION PARA INICIALIZAR EL MAPA
 function initMap() {
@@ -16,8 +17,8 @@ function initMap() {
   var selectTransporte = document.getElementById('mode'); //representa el medio de transaporte
 
   miUbicacion = {
-    lat: 20.6786652,
-    lng: -101.35449640000002
+    lat: 21.113413539067853,
+    lng: -101.65079098934316
   } //objeto para especificar mi ubicacion
   //manipulacion del DOM para mostrar el mapa
   map = new google.maps.Map(document.getElementById('map'), {
@@ -176,24 +177,35 @@ function initMap() {
       arregloMarkers.pop(); //extraemos mediante un pop el ultimo elemento del arreglo
     }
 
+
+    //TRAZAR RUTA SEGUN COORDENADAS PROVENIENTES DESDE UN SERVIDOR EXTERNO
     function obtenerCoordenadas(){
-      let variableControl=0;
+      let variableControl=0; //con esta variable de control nos aseguramos que la ejecucion del setinterval tenga un limite (valor centinela)
+
+      //comienzo de setinterval
       let coordenadas = setInterval(()=>{
         fetch('http://67.205.172.53:4000/getLastCoord/1')
         .then(function(response) {
           return response.json();
         })
         .then(function(myJson) {
-          console.log(myJson);
+          arregloPuntos.push({lat:myJson.data[0].lat,lng:myJson.data[0].lng}); //almacenamos cada coordenada en un arreglo global
         });
         variableControl++;
-
         if (variableControl==30) {
-          console.log("Llego a 30");
+          //una vez se llega a 30 ejecuciones del setinterval para con este; nota: son 30 coordenas las que recibo por eso manejo unicamente 30
           clearInterval(coordenadas);
-
-
         }
-
-      },1000)
+      },0);
+      //espero a que se ejecute todas las coordenadas del setinterval anterior para ahora si yo trazar la ruta
+      setTimeout(()=>{
+        var flightPath = new google.maps.Polyline({
+          path: arregloPuntos,
+          geodesic: true,
+          strokeColor: '#3880ff',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });
+        flightPath.setMap(map);
+      },3000)
     }
