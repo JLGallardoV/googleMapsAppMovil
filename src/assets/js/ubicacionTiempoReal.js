@@ -191,17 +191,23 @@ function initMap() {
         })
         .then(function(myJson) {
           arregloPuntos.push({lat:myJson.data[0].lat,lng:myJson.data[0].lng}); //almacenamos cada coordenada en un arreglo global
+          for (var i = 0; i < arregloPuntos.length; i++) {
+            if (arregloPuntos[i]!=arregloPuntos[i-1]) {
+              var flightPath = new google.maps.Polyline({
+                path: arregloPuntos,
+                geodesic: true,
+                strokeColor: '#3880ff',
+                strokeOpacity: 1.0,
+                strokeWeight: 2
+              });
+              flightPath.setMap(map);
+            }else {
+              console.log("estas en el mismo lugar");
+            }
+          }
         });
         variableControl++;
-        var flightPath = new google.maps.Polyline({
-          path: arregloPuntos,
-          geodesic: true,
-          strokeColor: '#3880ff',
-          strokeOpacity: 1.0,
-          strokeWeight: 2
-        });
-        console.log("el auto avanzo :"+variableControl+" vez(ces)");
-        flightPath.setMap(map);
+        console.log("tu vehiculo avanzo: "+variableControl+" vez(ces)");
         if (variableControl==30) {
           //una vez se llega a 30 ejecuciones del setinterval para con este; nota: son 30 coordenas las que recibo por eso manejo unicamente 30
           clearInterval(coordenadas);
