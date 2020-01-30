@@ -8,6 +8,7 @@ var arregloPuntos = [];
 
 //INICIO - FUNCION PARA INICIALIZAR EL MAPA
 function initMap() {
+  console.log("maps2");
   /*declaramos varibales globales ya que por el tiempo en que se ejecuta la app en angular si añadimos variables globales,
   estas pasan indefinidas por tal motivo las pongo en las funciones para asegurarnos de que los elementos ligados a las variables existen*/
   var directionsService = new google.maps.DirectionsService();
@@ -180,7 +181,7 @@ function initMap() {
 
     //TRAZAR RUTA SEGUN COORDENADAS PROVENIENTES DESDE UN SERVIDOR EXTERNO
     function obtenerCoordenadas(){
-      let variableControl=0; //con esta variable de control nos aseguramos que la ejecucion del setinterval tenga un limite (valor centinela)
+      /*let variableControl=0; //con esta variable de control nos aseguramos que la ejecucion del setinterval tenga un limite (valor centinela)
 
       //comienzo de setinterval
       let coordenadas = setInterval(()=>{
@@ -207,5 +208,5 @@ function initMap() {
           strokeWeight: 2
         });
         flightPath.setMap(map);
-      },3000)
+      },3000)*/
     }

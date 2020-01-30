@@ -40,8 +40,7 @@
               }
             ],
             "scripts": [
-                  "src/assets/js/maps.js",
-                  "src/assets/js/ubicacionTiempoReal.js"
+          
             ]
           },
           "configurations": {
