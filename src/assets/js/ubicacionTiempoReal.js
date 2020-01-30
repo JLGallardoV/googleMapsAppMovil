@@ -181,7 +181,7 @@ function initMap() {
 
     //TRAZAR RUTA SEGUN COORDENADAS PROVENIENTES DESDE UN SERVIDOR EXTERNO
     function obtenerCoordenadas(){
-      /*let variableControl=0; //con esta variable de control nos aseguramos que la ejecucion del setinterval tenga un limite (valor centinela)
+      let variableControl=0; //con esta variable de control nos aseguramos que la ejecucion del setinterval tenga un limite (valor centinela)
 
       //comienzo de setinterval
       let coordenadas = setInterval(()=>{
@@ -193,13 +193,6 @@ function initMap() {
           arregloPuntos.push({lat:myJson.data[0].lat,lng:myJson.data[0].lng}); //almacenamos cada coordenada en un arreglo global
         });
         variableControl++;
-        if (variableControl==30) {
-          //una vez se llega a 30 ejecuciones del setinterval para con este; nota: son 30 coordenas las que recibo por eso manejo unicamente 30
-          clearInterval(coordenadas);
-        }
-      },0);
-      //espero a que se ejecute todas las coordenadas del setinterval anterior para ahora si yo trazar la ruta
-      setTimeout(()=>{
         var flightPath = new google.maps.Polyline({
           path: arregloPuntos,
           geodesic: true,
@@ -207,6 +200,12 @@ function initMap() {
           strokeOpacity: 1.0,
           strokeWeight: 2
         });
+        console.log("el auto avanzo :"+variableControl+" vez(ces)");
         flightPath.setMap(map);
-      },3000)*/
+        if (variableControl==30) {
+          //una vez se llega a 30 ejecuciones del setinterval para con este; nota: son 30 coordenas las que recibo por eso manejo unicamente 30
+          clearInterval(coordenadas);
+        }
+      },1000);
+
     }
