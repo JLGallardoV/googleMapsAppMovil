@@ -62,12 +62,14 @@ function initMap() {
   //FUNCION PARA AGREGAR MARCADORES AL MAPA
   function addMarker(location, map) {
     id++;
+    var icono ='../assets/icon/carIcon.svg';
     marker = new google.maps.Marker({
       id: id,
       position: location, //posicion del marker
       map: map, //en el mapa en uso
       //animation: google.maps.Animation.DROP,
       draggable: true,
+      icon:icono
     });
     arregloMarkers.push(marker); //agregamos los markers a un arreglo para poder manipularlos posteriormente
     console.log("longitud del arreglo contenedor de markers: ", arregloMarkers.length);
