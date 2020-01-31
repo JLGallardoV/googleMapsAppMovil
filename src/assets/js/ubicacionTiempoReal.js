@@ -23,7 +23,7 @@ function initMap() {
   } //objeto para especificar mi ubicacion
   //manipulacion del DOM para mostrar el mapa
   map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 12, //nivel de zoom
+    zoom: 15, //nivel de zoom
     center: miUbicacion
   });
 
@@ -48,9 +48,9 @@ function initMap() {
 
 
   //esta funcionalidad ejecuta una accion  una vez el usuario clickea el mapa
-  google.maps.event.addListener(map, 'click', function(event) {
+  /*google.maps.event.addListener(map, 'click', function(event) {
     addMarker(event.latLng, map); //invocamos la funcion de agregar marker
-  });
+  });*/
 
 
 
@@ -66,7 +66,7 @@ function initMap() {
       id: id,
       position: location, //posicion del marker
       map: map, //en el mapa en uso
-      animation: google.maps.Animation.DROP,
+      //animation: google.maps.Animation.DROP,
       draggable: true,
     });
     arregloMarkers.push(marker); //agregamos los markers a un arreglo para poder manipularlos posteriormente
@@ -201,6 +201,9 @@ function initMap() {
                 strokeWeight: 2
               });
               flightPath.setMap(map);
+              removerUltimoMarker();
+              addMarker(arregloPuntos[i], map);
+              map.setCenter(arregloPuntos[i]);
             }else {
               console.log("estas en el mismo lugar");
             }
