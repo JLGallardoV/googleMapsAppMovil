@@ -10,8 +10,8 @@
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col size="9" size-md>
-        <div id="floating-panel">
+      <ion-col size="9" size-md style="margin-bottom: 20px;">
+        <div id="floating-panel" style="z-index: 1;">
           <form>
             <ion-item>
               <ion-label style="margin-right: 20px;">Destino</ion-label>
@@ -21,9 +21,9 @@
         </div>
         <div id="map" class="mapa"></div>
       </ion-col>
-      <ion-col size="3" size-md class="columna">
-        <div id="right-panel">
-          <ion-item>
+      <ion-col size="3" size-md class="columna" >
+        <div id="right-panel" style="margin-right: 20px;margin-left: 20px;">
+          <ion-item style="margin-bottom: 20px;">
             <ion-label>Medio de transporte</ion-label>
             <ion-select id="mode" okText="Okay" cancelText="Dismiss">
               <ion-select-option value="DRIVING" selected >Auto</ion-select-option>
