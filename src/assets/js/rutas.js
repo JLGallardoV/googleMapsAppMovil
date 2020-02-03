@@ -8,7 +8,7 @@ var arregloPuntos = [];
 
 //INICIO - FUNCION PARA INICIALIZAR EL MAPA
 function initMap() {
-  console.log("maps2");
+  console.log("maps3");
   /*declaramos varibales globales ya que por el tiempo en que se ejecuta la app en angular si añadimos variables globales,
   estas pasan indefinidas por tal motivo las pongo en las funciones para asegurarnos de que los elementos ligados a las variables existen*/
   var directionsService = new google.maps.DirectionsService();
@@ -17,17 +17,13 @@ function initMap() {
   var inputDestino = document.getElementById('idDestino');//representa la ruta y
   var selectTransporte = document.getElementById('mode'); //representa el medio de transaporte
 
-  miUbicacion = {
-    lat: 21.113413539067853,
-    lng: -101.65079098934316
-  } //objeto para especificar mi ubicacion
+  //obtenemos mi ubicacion mediante geolocalizacion
+  let miUbicacion = activarGeolocalizacion();
   //manipulacion del DOM para mostrar el mapa
   map = new google.maps.Map(document.getElementById('map'), {
     zoom: 15, //nivel de zoom
     center: miUbicacion
   });
-
-  obtenerCoordenadas();
 
   //agregando marker cuando se inicia el mapa (invocando funcion)
   addMarker(miUbicacion, map);
@@ -94,8 +90,10 @@ function initMap() {
   function calculateAndDisplayRoute(directionsService, directionsRenderer) {
     /*declaramos varibales globales ya que por el tiempo en que se ejecuta la app en angular si añadimos variables globales,
     estas pasan indefinidas por tal motivo las pongo en las funciones para asegurarnos de que los elementos ligados a las variables existen*/
-    var inputOrigen = document.getElementById('idOrigen');//representa la ruta x
+    let inputOrigen = pos //una vez que invocamos el metodo de activarGeolocalizacion en en initMap por tendremos ya un valor (lat,lng) asignado a nuestra variable global pos
+    console.log("contenido de input origen: ",inputOrigen);
     var inputDestino = document.getElementById('idDestino');//representa la ruta y
+    console.log("contenido de input destino: ",inputDestino.value);
     var selectTransporte = document.getElementById('mode'); //representa el medio de transaporte
 
     /*con este condicional evitaremos que cuando se ejecute esta funcion mande
@@ -167,6 +165,7 @@ function initMap() {
             lng: position.coords.longitude
           };
           map.setCenter(pos);//centramos el mapa en la actual posicion
+          return pos;
         });
       }else {
         alert("tu navegador no soporta geolocalizacion");
@@ -178,45 +177,4 @@ function initMap() {
     function removerUltimoMarker(){
       arregloMarkers[arregloMarkers.length-1].setMap(null); //ocultamos del mapa el ultimo marker generado
       arregloMarkers.pop(); //extraemos mediante un pop el ultimo elemento del arreglo
-    }
-
-
-    //TRAZAR RUTA SEGUN COORDENADAS PROVENIENTES DESDE UN SERVIDOR EXTERNO
-    function obtenerCoordenadas(){
-      let variableControl=0; //con esta variable de control nos aseguramos que la ejecucion del setinterval tenga un limite (valor centinela)
-
-      //comienzo de setinterval
-      let coordenadas = setInterval(()=>{
-        fetch('http://67.205.172.53:4000/getLastCoord/1')
-        .then(function(response) {
-          return response.json();
-        })
-        .then(function(myJson) {
-          arregloPuntos.push({lat:myJson.data[0].lat,lng:myJson.data[0].lng}); //almacenamos cada coordenada en un arreglo global
-          for (var i = 0; i < arregloPuntos.length; i++) {
-            if (arregloPuntos[i]!=arregloPuntos[i-1]) {
-              var flightPath = new google.maps.Polyline({
-                path: arregloPuntos,
-                geodesic: true,
-                strokeColor: '#3880ff',
-                strokeOpacity: 1.0,
-                strokeWeight: 2
-              });
-              flightPath.setMap(map);
-              removerUltimoMarker();
-              addMarker(arregloPuntos[i], map);
-              map.setCenter(arregloPuntos[i]);
-            }else {
-              console.log("estas en el mismo lugar");
-            }
-          }
-        });
-        variableControl++;
-        console.log("tu vehiculo avanzo: "+variableControl+" vez(ces)");
-        if (variableControl==30) {
-          //una vez se llega a 30 ejecuciones del setinterval para con este; nota: son 30 coordenas las que recibo por eso manejo unicamente 30
-          clearInterval(coordenadas);
-        }
-      },1000);
-
     }
