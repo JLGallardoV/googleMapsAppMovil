@@ -88,36 +88,47 @@ function initMap() {
 
   //FUNCION PARA TRAZAR UNA RUTA SEGUN UN PUNTO x Y UN PUNTO y
   function calculateAndDisplayRoute(directionsService, directionsRenderer) {
-    /*declaramos varibales globales ya que por el tiempo en que se ejecuta la app en angular si añadimos variables globales,
+    let origen = "";
+    /*declaramos varibales locales ya que por el tiempo en que se ejecuta la app en angular si añadimos variables globales,
     estas pasan indefinidas por tal motivo las pongo en las funciones para asegurarnos de que los elementos ligados a las variables existen*/
-    let inputOrigen = pos //una vez que invocamos el metodo de activarGeolocalizacion en en initMap por tendremos ya un valor (lat,lng) asignado a nuestra variable global pos
-    console.log("contenido de input origen: ",inputOrigen);
-    var inputDestino = document.getElementById('idDestino');//representa la ruta y
-    console.log("contenido de input destino: ",inputDestino.value);
-    var selectTransporte = document.getElementById('mode'); //representa el medio de transaporte
+    fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + pos.lat + ',' + pos.lng + '&key=AIzaSyB1a8Rh3D5TonkRFxL3JHmwImWnLdtPKzk&libraries=places&callback=initMap&&sensor=true')
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(myJson) {
+       origen = myJson.results[0].formatted_address;
+       console.log("contenido de input origen: ", origen);
+       var inputDestino = document.getElementById('idDestino'); //representa la ruta y
+       console.log("contenido de input destino: ", inputDestino.value);
+       var selectTransporte = document.getElementById('mode'); //representa el medio de transaporte
 
-    /*con este condicional evitaremos que cuando se ejecute esta funcion mande
-    un input sin valor y mande un error en la consola por localizacion no especificada */
-    if (inputOrigen.value == "" || inputDestino.value == "") {
-      console.log("No todos los inputs estan llenos");
-      return;
-    }
+       /*con este condicional evitaremos que cuando se ejecute esta funcion mande
+       un input sin valor y mande un error en la consola por localizacion no especificada */
+       if (origen == "" || inputDestino.value == "") {
+         console.log("No todos los inputs estan llenos");
+         return;
+       }
 
-    directionsService.route(
-      {
-        //recibimos las propiedades necesarias para que pueda trazar la ruta
-        origin: {query: inputOrigen.value},
-        destination: {query: inputDestino.value},
-        travelMode: selectTransporte.value
-      },
-      (response, status) => {
-        if (status === 'OK') {
-          directionsRenderer.setDirections(response);
-        } else {
-          window.alert('No se pudo generar la ruta: ' + status);
-        }
-      });
-    }
+       directionsService.route({
+           //recibimos las propiedades necesarias para que pueda trazar la ruta
+           origin: {
+             query: origen
+           },
+           destination: {
+             query: inputDestino.value
+           },
+           travelMode: selectTransporte.value
+         },
+         (response, status) => {
+           if (status === 'OK') {
+             directionsRenderer.setDirections(response);
+           } else {
+             window.alert('No se pudo generar la ruta: ' + status);
+           }
+         });
+    });
+  }
+
 
     //FUNCION PARA MOSTRAR UN CUADRADO CON EL OBJETIVO DE SELECCIONAR UN AREA DEL MAPA
     function seleccionarUbicacion(){
@@ -178,3 +189,8 @@ function initMap() {
       arregloMarkers[arregloMarkers.length-1].setMap(null); //ocultamos del mapa el ultimo marker generado
       arregloMarkers.pop(); //extraemos mediante un pop el ultimo elemento del arreglo
     }
+
+    function convertirCoordenadasAUbicacion(coordenadas){
+        let ubicacion="";
+
+   }
