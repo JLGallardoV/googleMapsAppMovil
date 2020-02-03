@@ -25,8 +25,6 @@ function initMap() {
     center: miUbicacion
   });
 
-  //agregando marker cuando se inicia el mapa (invocando funcion)
-  addMarker(miUbicacion, map);
   //autocompletando inputs (invocando funcion)
   autocompletarInputs();
   //en su momento permite que se muestre la ruta entre el punto a y el punto b
@@ -38,19 +36,8 @@ function initMap() {
   }
 
   //invocamos la funcion onChangeHandler al momento de detectar un cambio en los inputs
-  inputOrigen.addEventListener('change', onChangeHandler);
   inputDestino.addEventListener('change', onChangeHandler);
   selectTransporte.addEventListener('change', onChangeHandler);
-
-
-  //esta funcionalidad ejecuta una accion  una vez el usuario clickea el mapa
-  /*google.maps.event.addListener(map, 'click', function(event) {
-    addMarker(event.latLng, map); //invocamos la funcion de agregar marker
-  });*/
-
-
-
-
 
   }//FIN - FUNCION PARA INICIALIZAR EL MAPA
 
@@ -86,11 +73,13 @@ function initMap() {
   }
 
 
-  //FUNCION PARA TRAZAR UNA RUTA SEGUN UN PUNTO x Y UN PUNTO y
+  //FUNCION PARA TRAZAR UNA RUTA SEGUN UN PUNTO x Y UN PUNTO y DONDE PUNTO x ES MI UBICACION
   function calculateAndDisplayRoute(directionsService, directionsRenderer) {
-    let origen = "";
     /*declaramos varibales locales ya que por el tiempo en que se ejecuta la app en angular si añadimos variables globales,
     estas pasan indefinidas por tal motivo las pongo en las funciones para asegurarnos de que los elementos ligados a las variables existen*/
+    let origen = "";//almacenara mi ubicacion
+
+    //esta api nos ayudará a trasformar coordenadas a una ubicacion geografica aceptada por el directions service de google, pos es nuestra ubicacion, se asigna su valor al iniciar el mapa y darnos nuestra geolocalizacion
     fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + pos.lat + ',' + pos.lng + '&key=AIzaSyB1a8Rh3D5TonkRFxL3JHmwImWnLdtPKzk&libraries=places&callback=initMap&&sensor=true')
     .then(function(response) {
       return response.json();
@@ -98,7 +87,7 @@ function initMap() {
     .then(function(myJson) {
        origen = myJson.results[0].formatted_address;
        console.log("contenido de input origen: ", origen);
-       var inputDestino = document.getElementById('idDestino'); //representa la ruta y
+       var inputDestino = document.getElementById('idDestino'); //representa la ruta y, proviene de un elemento html
        console.log("contenido de input destino: ", inputDestino.value);
        var selectTransporte = document.getElementById('mode'); //representa el medio de transaporte
 
@@ -130,40 +119,6 @@ function initMap() {
   }
 
 
-    //FUNCION PARA MOSTRAR UN CUADRADO CON EL OBJETIVO DE SELECCIONAR UN AREA DEL MAPA
-    function seleccionarUbicacion(){
-      if (navigator.geolocation) {
-        /*obtenemos nuestra ubicacion mediante la API de maps
-        y almacenamos la actual posicion en el objeto pos*/
-        navigator.geolocation.getCurrentPosition(function(position) {
-          pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
-          map.setCenter(pos);//centramos el mapa en la actual posicion
-          //limites del area del cuadrado
-          var bounds = new google.maps.LatLngBounds(pos); //usamos la clase LatLngBounds y pasamos como parametro en su constructor nuestra posicion para poder ubicar el cuadrado en nuestra posicion
-          console.log("contenido de bounds: ",bounds);
-          //creamos el cuadrado
-          var rectangle = new google.maps.Rectangle({
-            bounds: {
-              north: bounds.Ya.i, //accedemos a las propiedades que contienen coordenadas
-              south:bounds.Ya.g + .01, //sumamos una centesima al sur para alargar el cuadrado y tenga forma
-              east:bounds.Ta.i + .01, //sumamos una centesima al este para alargar el cuadrado y tenga forma
-              west:bounds.Ta.g
-            },
-            editable: true,
-            draggable: true
-          });
-          //pintamos el cuadrado en el mapa
-          rectangle.setMap(map);
-        });
-      }else {
-        alert("tu navegador no soporta geolocalizacion");
-      }
-    }
-
-
     //FUNCION PARA ACTIVAMOS GEOLOCALIZACION EN EL NAVEGADOR
     function activarGeolocalizacion(){
       if (navigator.geolocation) {
@@ -182,15 +137,3 @@ function initMap() {
         alert("tu navegador no soporta geolocalizacion");
       }
     }
-
-
-    //FUNCION PARA REMOVER MARKERS
-    function removerUltimoMarker(){
-      arregloMarkers[arregloMarkers.length-1].setMap(null); //ocultamos del mapa el ultimo marker generado
-      arregloMarkers.pop(); //extraemos mediante un pop el ultimo elemento del arreglo
-    }
-
-    function convertirCoordenadasAUbicacion(coordenadas){
-        let ubicacion="";
-
-   }
