@@ -13,7 +13,6 @@ function initMap() {
   estas pasan indefinidas por tal motivo las pongo en las funciones para asegurarnos de que los elementos ligados a las variables existen*/
   var directionsService = new google.maps.DirectionsService();
   var directionsRenderer = new google.maps.DirectionsRenderer();
-  var inputOrigen = document.getElementById('idOrigen');//representa la ruta x
   var inputDestino = document.getElementById('idDestino');//representa la ruta y
   var selectTransporte = document.getElementById('mode'); //representa el medio de transaporte
 
@@ -35,9 +34,18 @@ function initMap() {
     calculateAndDisplayRoute(directionsService, directionsRenderer);
   }
 
+  
+  directionsRenderer.setMap(map);
+  directionsRenderer.setPanel(document.getElementById('right-panel'));
+
+  var control = document.getElementById('floating-panel');
+  control.style.display = 'block';
+  map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
+
   //invocamos la funcion onChangeHandler al momento de detectar un cambio en los inputs
   inputDestino.addEventListener('change', onChangeHandler);
   selectTransporte.addEventListener('change', onChangeHandler);
+
 
   }//FIN - FUNCION PARA INICIALIZAR EL MAPA
 
@@ -61,11 +69,6 @@ function initMap() {
 
   //FUNCION PARA AUTOCOMPLETAR LOS INPUTS
   function autocompletarInputs(){
-    //origen
-    var autocompleteOrigen = new google.maps.places.Autocomplete(document.getElementById('idOrigen'));
-    autocompleteOrigen.bindTo('bounds', map); //restringe los resultados, los hace mas locales
-    autocompleteOrigen.setFields(['address_components', 'geometry', 'icon', 'name']);//establece los campos que se van a ver en los detalles del lugar
-
     //destino
     var autocompleteDestino = new google.maps.places.Autocomplete(document.getElementById('idDestino'));
     autocompleteDestino.bindTo('bounds', map);//restringe los resultados, los hace mas locales

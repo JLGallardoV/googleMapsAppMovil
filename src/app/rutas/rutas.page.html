@@ -1,48 +1,40 @@
 <!-- HEADER -->
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>
+    <ion-title style="text-align: center;">
       Google Maps API
     </ion-title>
   </ion-toolbar>
 </ion-header>
 <!-- CONTENIDO DE LA APP -->
 <ion-content>
-  <ion-card style="height: 95%;overflow: auto;">
-    <br>
-      <form>
-        <ion-item>
-          <ion-label>Ruta</ion-label>
-          <input id="idOrigen" style="border: none;">
-        </ion-item>
-        <ion-item>
-          <ion-label>Ruta</ion-label>
-          <input id="idDestino" style="border: none;">
-        </ion-item>
-        <ion-item>
-          <ion-label>Medio de transporte</ion-label>
-          <ion-select id="mode" okText="Okay" cancelText="Dismiss">
-            <ion-select-option value="DRIVING" selected >Auto</ion-select-option>
-            <ion-select-option value="WALKING">Caminando</ion-select-option>
-            <ion-select-option value="BICYCLING">Bicicleta</ion-select-option>
-          </ion-select>
-        </ion-item>
-      </form>
-      <ion-item>
-        <ion-button onclick="removerUltimoMarker()">
-          Eliminar ultimo marker
-        </ion-button>
-        <ion-button onclick="seleccionarUbicacion()">
-          Seleccionar área
-        </ion-button>
-      </ion-item>
-      <ion-item>
-        <ion-button onclick="activarGeolocalizacion()">
-          Mi ubicación
-        </ion-button>
-      </ion-item>
-      <div id="map" style="padding: 143px; border-radius: 6px;margin: 20px;"></div>
-  </ion-card>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="8" size-md>
+        <div id="floating-panel" style="display: flex;">
+          <form style="display:contents;">
+            <ion-item>
+              <ion-label style="margin-right: 20px;">Destino</ion-label>
+              <input id="idDestino" style="border: none;">
+            </ion-item>
+          </form>
+        </div>
+        <div id="map"></div>
+      </ion-col>
+      <ion-col size="4" size-md>
+        <div id="right-panel">
+          <ion-item>
+            <ion-label>Medio de transporte</ion-label>
+            <ion-select id="mode" okText="Okay" cancelText="Dismiss">
+              <ion-select-option value="DRIVING" selected >Auto</ion-select-option>
+              <ion-select-option value="WALKING">Caminando</ion-select-option>
+              <ion-select-option value="BICYCLING">Bicicleta</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
 <!-- FOOTER  -->
 <ion-footer>

@@ -1,0 +1,12 @@
+#map {
+  height: 500px;
+
+}
+
+@media print {
+
+  #right-panel {
+    float: none;
+    width: auto;
+  }
+}
