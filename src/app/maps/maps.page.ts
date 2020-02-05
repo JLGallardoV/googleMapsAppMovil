@@ -22,6 +22,6 @@ export class MapsPage implements OnInit {
   }
   ngOnInit() {
     this.loadScript('../assets/js/ubicacionTiempoReal.js');
-    this.loadScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyB1a8Rh3D5TonkRFxL3JHmwImWnLdtPKzk&libraries=places&callback=initMap&&sensor=true');
+    this.loadScript('https://maps.googleapis.com/maps/api/js?key=TU-API-KEY&libraries=places&callback=initMap&&sensor=true');
   }
 }
